@@ -86,15 +86,26 @@ function init(): void {
 
 // ── AR Button Setup ──────────────────────────
 
-function setupARButton(): void {
-    if (isCameraARSupported()) {
+async function setupARButton(): Promise<void> {
+    // Check for native WebXR AR support (Android Chrome with ARCore)
+    const webxrSupported = navigator.xr
+        ? await navigator.xr.isSessionSupported('immersive-ar').catch(() => false)
+        : false;
+
+    if (webxrSupported) {
+        // Android Chrome — use model-viewer's WebXR AR (real anchored AR + DOM overlay hotspots)
+        arButton.classList.remove('hidden');
+        arButton.addEventListener('click', () => {
+            modelViewer.activateAR();
+        });
+    } else if (isCameraARSupported()) {
+        // iOS / other — use camera overlay AR (camera feed + model + hotspots)
         arButton.classList.remove('hidden');
         arButton.addEventListener('click', () => {
             startCameraAR(modelViewer);
         });
     } else {
         arButton.classList.add('hidden');
-        console.log('Camera not available. Using 3D turntable mode.');
     }
 }
 

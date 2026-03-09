@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <!-- Variant Launch WebAR SDK — bridges WebXR to ARKit on iOS via App Clips -->
-  <script src="https://launchar.app/sdk/v1?key=cTc79qxBU8hr2ccsKEE8h48cfpfb3X1r" async></script>
+  <script src="https://launchar.app/sdk/v1?key=cTc79qxBU8hr2ccsKEE8h48cfpfb3X1r"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -105,9 +105,9 @@
 
   <!-- ============ 3D VIEWER ============ -->
   <div id="viewer-container" class="viewer">
-    <model-viewer id="mclaren-viewer" src="" camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="5000"
-      rotation-per-second="12deg" environment-image="neutral" shadow-intensity="1" exposure="1.0"
-      camera-orbit="45deg 65deg 105%" min-camera-orbit="auto auto 80%" max-camera-orbit="auto auto 200%"
+    <model-viewer id="mclaren-viewer" src="" ar ar-modes="webxr" xr-environment camera-controls touch-action="pan-y"
+      auto-rotate auto-rotate-delay="5000" rotation-per-second="12deg" environment-image="neutral" shadow-intensity="1"
+      exposure="1.0" camera-orbit="45deg 65deg 105%" min-camera-orbit="auto auto 80%" max-camera-orbit="auto auto 200%"
       field-of-view="30deg" interaction-prompt="none" reveal="auto" loading="eager" style="width: 100%; height: 100%;">
 
       <!-- Hotspot markers — positions calibrated for Astronaut demo model -->
