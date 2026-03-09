@@ -25,7 +25,6 @@ const loaderFill = document.getElementById('loader-fill') as HTMLElement;
 const loaderText = document.getElementById('loader-text') as HTMLElement;
 const onboarding = document.getElementById('onboarding') as HTMLElement;
 const onboardingStart = document.getElementById('onboarding-start') as HTMLElement;
-const viewerContainer = document.getElementById('viewer-container') as HTMLElement;
 const modelViewer = document.getElementById('mclaren-viewer') as any;
 const btnResetView = document.getElementById('btn-reset-view') as HTMLElement;
 const arButton = document.getElementById('ar-button') as HTMLElement;
