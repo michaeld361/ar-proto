@@ -87,22 +87,18 @@ function init(): void {
 // ── AR Button Setup ──────────────────────────
 
 async function setupARButton(): Promise<void> {
-    // Dynamically check for AR support without loading Three.js
-    // (navigator.xr is available without Three.js)
+    // Check for WebXR support
     const supported = navigator.xr
         ? await navigator.xr.isSessionSupported('immersive-ar').catch(() => false)
         : false;
 
     if (supported) {
-        // WebXR AR is available (Android natively, iOS via Variant Launch)
         arButton.classList.remove('hidden');
-        arButton.addEventListener('click', async () => {
-            // Lazy-load Three.js + AR session only when user taps AR
-            const { startARSession } = await import('./ar-session');
-            startARSession(MODEL_URL);
+        arButton.addEventListener('click', () => {
+            // Use model-viewer's built-in AR activation
+            modelViewer.activateAR();
         });
     } else {
-        // No WebXR support — hide AR button, turntable only
         arButton.classList.add('hidden');
         console.log('WebXR AR not supported on this device. Using 3D turntable mode.');
     }
