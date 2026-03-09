@@ -11,7 +11,7 @@ import { hotspots } from './hotspots';
 import type { HotspotData } from './hotspots';
 import { initPanels, openPanel, closePanel } from './panels';
 import { playRevealAnimation, orbitToHotspot, resetCameraOrbit, cameraPresets } from './animations';
-import { isCameraARSupported, startCameraAR } from './camera-ar';
+// camera-ar is loaded dynamically when AR button is tapped (avoids Three.js loading with model-viewer)
 
 // ── State ────────────────────────────────────
 
@@ -86,36 +86,16 @@ function init(): void {
 
 // ── AR Button Setup ──────────────────────────
 
-async function setupARButton(): Promise<void> {
-    // Check for Variant Launch (iOS WebXR bridge via App Clip)
-    const hasVariantLaunch = !!(window as any).VLaunch;
+function setupARButton(): void {
+    // Camera AR is available on any device with getUserMedia
+    const hasCamera = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 
-    // Check for native WebXR AR support (Android Chrome with ARCore)
-    const webxrSupported = navigator.xr
-        ? await navigator.xr.isSessionSupported('immersive-ar').catch(() => false)
-        : false;
-
-    // DEBUG: Show AR detection info on screen (temporary)
-    const debug = document.createElement('div');
-    debug.style.cssText = 'position:fixed;bottom:80px;left:10px;z-index:9999;background:rgba(0,0,0,0.9);color:#0f0;font:12px monospace;padding:10px;border-radius:8px;max-width:90vw;';
-    debug.innerHTML = `
-        VLaunch: ${hasVariantLaunch}<br>
-        navigator.xr: ${!!navigator.xr}<br>
-        WebXR supported: ${webxrSupported}<br>
-        AR path: ${hasVariantLaunch || webxrSupported ? 'MODEL-VIEWER activateAR' : 'CAMERA OVERLAY'}<br>
-        UA: ${navigator.userAgent.slice(0, 60)}...
-    `;
-    document.body.appendChild(debug);
-
-    if (hasVariantLaunch || webxrSupported) {
+    if (hasCamera) {
         arButton.classList.remove('hidden');
-        arButton.addEventListener('click', () => {
-            modelViewer.activateAR();
-        });
-    } else if (isCameraARSupported()) {
-        arButton.classList.remove('hidden');
-        arButton.addEventListener('click', () => {
-            startCameraAR(modelViewer);
+        arButton.addEventListener('click', async () => {
+            // Dynamically load Three.js AR module (keeps it separate from model-viewer)
+            const { startCameraAR } = await import('./camera-ar');
+            startCameraAR(MODEL_URL);
         });
     } else {
         arButton.classList.add('hidden');
