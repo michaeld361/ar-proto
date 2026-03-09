@@ -8,15 +8,14 @@
  */
 export function playRevealAnimation(modelViewer: HTMLElement): void {
     modelViewer.style.opacity = '0';
-    modelViewer.style.transform = 'scale(0.9)';
-    modelViewer.style.transition = 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+    modelViewer.style.transform = 'scale(0.95)';
+    modelViewer.style.transition = 'none';
 
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            modelViewer.style.opacity = '1';
-            modelViewer.style.transform = 'scale(1)';
-        });
-    });
+    setTimeout(() => {
+        modelViewer.style.transition = 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+        modelViewer.style.opacity = '1';
+        modelViewer.style.transform = 'scale(1)';
+    }, 50);
 }
 
 /**
