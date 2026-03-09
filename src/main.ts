@@ -11,7 +11,7 @@ import { hotspots } from './hotspots';
 import type { HotspotData } from './hotspots';
 import { initPanels, openPanel, closePanel } from './panels';
 import { playRevealAnimation, orbitToHotspot, resetCameraOrbit, cameraPresets } from './animations';
-import { isARSupported, startARSession } from './ar-session';
+// ar-session is loaded dynamically to avoid Three.js version conflict with model-viewer
 
 // ── State ────────────────────────────────────
 
@@ -88,12 +88,18 @@ function init(): void {
 // ── AR Button Setup ──────────────────────────
 
 async function setupARButton(): Promise<void> {
-    const supported = await isARSupported();
+    // Dynamically check for AR support without loading Three.js
+    // (navigator.xr is available without Three.js)
+    const supported = navigator.xr
+        ? await navigator.xr.isSessionSupported('immersive-ar').catch(() => false)
+        : false;
 
     if (supported) {
         // WebXR AR is available (Android natively, iOS via Variant Launch)
         arButton.classList.remove('hidden');
-        arButton.addEventListener('click', () => {
+        arButton.addEventListener('click', async () => {
+            // Lazy-load Three.js + AR session only when user taps AR
+            const { startARSession } = await import('./ar-session');
             startARSession(MODEL_URL);
         });
     } else {
