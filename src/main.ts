@@ -1,7 +1,8 @@
 /* =============================================
    McLaren Artura Spider — Main Entry Point
    App state machine: LOADING → ONBOARDING → EXPLORING
-   Variant Launch SDK for cross-platform WebXR AR
+   Three.js WebXR AR with Variant Launch SDK
+   model-viewer as 3D turntable fallback
    ============================================= */
 
 import '@google/model-viewer';
@@ -10,6 +11,7 @@ import { hotspots } from './hotspots';
 import type { HotspotData } from './hotspots';
 import { initPanels, openPanel, closePanel } from './panels';
 import { playRevealAnimation, orbitToHotspot, resetCameraOrbit, cameraPresets } from './animations';
+import { isARSupported, startARSession } from './ar-session';
 
 // ── State ────────────────────────────────────
 
@@ -26,6 +28,7 @@ const onboardingStart = document.getElementById('onboarding-start') as HTMLEleme
 const viewerContainer = document.getElementById('viewer-container') as HTMLElement;
 const modelViewer = document.getElementById('mclaren-viewer') as any;
 const btnResetView = document.getElementById('btn-reset-view') as HTMLElement;
+const arButton = document.getElementById('ar-button') as HTMLElement;
 
 // ── GLB Model ────────────────────────────────
 // Using a model-viewer sample for PoC. Replace with the optimised McLaren Artura GLB.
@@ -41,7 +44,7 @@ const ENV_URL = 'https://modelviewer.dev/shared-assets/environments/spruit_sunri
 function init(): void {
     updateLoader(10, 'Initialising…');
 
-    // Set model source
+    // Set model source (model-viewer is used as the 3D turntable)
     modelViewer.setAttribute('src', MODEL_URL);
     modelViewer.setAttribute('environment-image', ENV_URL);
     modelViewer.setAttribute('skybox-image', '');
@@ -70,7 +73,7 @@ function init(): void {
         }
     }, 8000);
 
-    // Set up hotspot click handlers
+    // Set up hotspot click handlers (for model-viewer turntable mode)
     setupHotspots();
 
     // Initialise panel system
@@ -81,6 +84,27 @@ function init(): void {
         resetCameraOrbit(modelViewer);
         closePanel();
     });
+
+    // Set up custom AR button
+    setupARButton();
+}
+
+// ── AR Button Setup ──────────────────────────
+
+async function setupARButton(): Promise<void> {
+    const supported = await isARSupported();
+
+    if (supported) {
+        // WebXR AR is available (Android natively, iOS via Variant Launch)
+        arButton.classList.remove('hidden');
+        arButton.addEventListener('click', () => {
+            startARSession(MODEL_URL);
+        });
+    } else {
+        // No WebXR support — hide AR button, turntable only
+        arButton.classList.add('hidden');
+        console.log('WebXR AR not supported on this device. Using 3D turntable mode.');
+    }
 }
 
 // ── Loader ───────────────────────────────────
@@ -122,7 +146,7 @@ function transitionToExploring(): void {
     playRevealAnimation(modelViewer);
 }
 
-// ── Hotspot System ───────────────────────────
+// ── Hotspot System (model-viewer turntable) ──
 
 function setupHotspots(): void {
     const hotspotMap = new Map<string, HotspotData>();
@@ -150,17 +174,6 @@ function setupHotspots(): void {
         });
     });
 }
-
-// ── Variant Launch Integration ───────────────
-// The Variant Launch SDK is loaded via <script> in index.html.
-// It polyfills WebXR for iOS Safari via an App Clip bridge,
-// so the standard WebXR AR flow in model-viewer "just works"
-// on both Android (Scene Viewer) and iOS (ARKit via Variant Launch).
-//
-// Configuration is handled by the data attributes on the script tag.
-// No additional JS setup is required for the basic AR flow —
-// model-viewer's built-in AR button will trigger the Variant Launch
-// experience on iOS and Scene Viewer/WebXR on Android.
 
 // ── Boot ─────────────────────────────────────
 

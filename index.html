@@ -105,21 +105,11 @@
 
   <!-- ============ 3D VIEWER ============ -->
   <div id="viewer-container" class="viewer hidden">
-    <model-viewer id="mclaren-viewer" src="" poster="" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed"
-      xr-environment camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="5000"
-      rotation-per-second="12deg" environment-image="neutral" shadow-intensity="1.2" shadow-softness="0.8"
-      exposure="1.0" tone-mapping="commerce" camera-orbit="45deg 65deg 105%" min-camera-orbit="auto auto 80%"
-      max-camera-orbit="auto auto 200%" field-of-view="30deg" interaction-prompt="none" loading="eager"
-      style="width: 100%; height: 100%;">
-      <!-- AR Prompt -->
-      <button slot="ar-button" id="ar-button" class="ar-button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
-          <path d="M12 22V12" stroke="currentColor" stroke-width="2" />
-          <path d="M22 7L12 12L2 7" stroke="currentColor" stroke-width="2" />
-        </svg>
-        <span>View in AR</span>
-      </button>
+    <model-viewer id="mclaren-viewer" src="" poster="" camera-controls touch-action="pan-y" auto-rotate
+      auto-rotate-delay="5000" rotation-per-second="12deg" environment-image="neutral" shadow-intensity="1.2"
+      shadow-softness="0.8" exposure="1.0" tone-mapping="commerce" camera-orbit="45deg 65deg 105%"
+      min-camera-orbit="auto auto 80%" max-camera-orbit="auto auto 200%" field-of-view="30deg" interaction-prompt="none"
+      loading="eager" style="width: 100%; height: 100%;">
 
       <!-- Hotspot markers — positions calibrated for Astronaut demo model -->
       <!-- When you swap in the McLaren GLB, update data-position/data-normal values -->
@@ -180,6 +170,16 @@
       </div>
 
     </model-viewer>
+
+    <!-- Custom AR Button — triggers Three.js WebXR session with hotspots -->
+    <button id="ar-button" class="ar-button hidden">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        <path d="M12 22V12" stroke="currentColor" stroke-width="2" />
+        <path d="M22 7L12 12L2 7" stroke="currentColor" stroke-width="2" />
+      </svg>
+      <span>View in AR</span>
+    </button>
 
     <!-- HUD Overlay -->
     <div class="hud">
