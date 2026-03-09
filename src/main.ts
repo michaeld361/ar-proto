@@ -141,10 +141,7 @@ function transitionToExploring(): void {
     // Hide onboarding
     onboarding.classList.add('hidden');
 
-    // Show viewer
-    viewerContainer.classList.remove('hidden');
-
-    // Play reveal animation
+    // Viewer is already visible behind the overlays — just play reveal
     playRevealAnimation(modelViewer);
 }
 
