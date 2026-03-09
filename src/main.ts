@@ -36,8 +36,6 @@ const MODEL_URL = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
 // When you have the McLaren Artura model:
 // const MODEL_URL = '/models/mclaren-artura-spider.glb';
 
-// ── Environment HDR ──────────────────────────
-const ENV_URL = 'https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr';
 
 // ── Initialisation ───────────────────────────
 
@@ -46,8 +44,6 @@ function init(): void {
 
     // Set model source (model-viewer is used as the 3D turntable)
     modelViewer.setAttribute('src', MODEL_URL);
-    modelViewer.setAttribute('environment-image', ENV_URL);
-    modelViewer.setAttribute('skybox-image', '');
 
     // Listen for model load progress
     modelViewer.addEventListener('progress', (event: CustomEvent) => {
