@@ -11,7 +11,7 @@ import { hotspots } from './hotspots';
 import type { HotspotData } from './hotspots';
 import { initPanels, openPanel, closePanel } from './panels';
 import { playRevealAnimation, orbitToHotspot, resetCameraOrbit, cameraPresets } from './animations';
-// ar-session is loaded dynamically to avoid Three.js version conflict with model-viewer
+import { isCameraARSupported, startCameraAR } from './camera-ar';
 
 // ── State ────────────────────────────────────
 
@@ -86,21 +86,15 @@ function init(): void {
 
 // ── AR Button Setup ──────────────────────────
 
-async function setupARButton(): Promise<void> {
-    // Check for WebXR support
-    const supported = navigator.xr
-        ? await navigator.xr.isSessionSupported('immersive-ar').catch(() => false)
-        : false;
-
-    if (supported) {
+function setupARButton(): void {
+    if (isCameraARSupported()) {
         arButton.classList.remove('hidden');
         arButton.addEventListener('click', () => {
-            // Use model-viewer's built-in AR activation
-            modelViewer.activateAR();
+            startCameraAR(modelViewer);
         });
     } else {
         arButton.classList.add('hidden');
-        console.log('WebXR AR not supported on this device. Using 3D turntable mode.');
+        console.log('Camera not available. Using 3D turntable mode.');
     }
 }
 
