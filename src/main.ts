@@ -87,19 +87,23 @@ function init(): void {
 // ── AR Button Setup ──────────────────────────
 
 async function setupARButton(): Promise<void> {
+    // Check for Variant Launch (iOS WebXR bridge via App Clip)
+    const hasVariantLaunch = !!(window as any).VLaunch;
+
     // Check for native WebXR AR support (Android Chrome with ARCore)
     const webxrSupported = navigator.xr
         ? await navigator.xr.isSessionSupported('immersive-ar').catch(() => false)
         : false;
 
-    if (webxrSupported) {
-        // Android Chrome — use model-viewer's WebXR AR (real anchored AR + DOM overlay hotspots)
+    if (hasVariantLaunch || webxrSupported) {
+        // WebXR available (native on Android, or via Variant Launch on iOS)
+        // model-viewer activateAR() will handle the session through the polyfill
         arButton.classList.remove('hidden');
         arButton.addEventListener('click', () => {
             modelViewer.activateAR();
         });
     } else if (isCameraARSupported()) {
-        // iOS / other — use camera overlay AR (camera feed + model + hotspots)
+        // Fallback — camera overlay AR
         arButton.classList.remove('hidden');
         arButton.addEventListener('click', () => {
             startCameraAR(modelViewer);
