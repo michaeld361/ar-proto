@@ -87,19 +87,11 @@ function init(): void {
 // ── AR Button Setup ──────────────────────────
 
 function setupARButton(): void {
-    // Camera AR is available on any device with getUserMedia
-    const hasCamera = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-
-    if (hasCamera) {
-        arButton.classList.remove('hidden');
-        arButton.addEventListener('click', async () => {
-            // Dynamically load Three.js AR module (keeps it separate from model-viewer)
-            const { startCameraAR } = await import('./camera-ar');
-            startCameraAR(MODEL_URL);
-        });
-    } else {
-        arButton.classList.add('hidden');
-    }
+    // Always show AR button — navigates to MindAR image-tracked AR page
+    arButton.classList.remove('hidden');
+    arButton.addEventListener('click', () => {
+        window.location.href = '/ar.html';
+    });
 }
 
 // ── Loader ───────────────────────────────────

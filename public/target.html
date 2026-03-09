@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>McLaren AR — Print Target</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 14px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #FF8000;
+            margin-bottom: 24px;
+        }
+
+        p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .card-wrap {
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card-wrap img {
+            display: block;
+            width: 300px;
+            height: auto;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 400px;
+        }
+
+        .instructions h3 {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #FF8000;
+            margin-bottom: 12px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+            font-size: 14px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #FF8000;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>McLaren Artura Spider</h1>
+    <h2>AR Target Card</h2>
+    <p>Print this image or display it on another screen, then point your camera at it to start the AR experience.</p>
+
+    <div class="card-wrap">
+        <img src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png"
+            alt="AR Target Card" id="target-img">
+    </div>
+
+    <div class="instructions">
+        <h3>How to use</h3>
+        <ol>
+            <li>Print this page or display it on another screen</li>
+            <li>Open <strong>ar-proto.onrender.com/ar.html</strong> on your phone</li>
+            <li>Point your camera at this image</li>
+            <li>The 3D model will appear anchored to the card</li>
+            <li>Tap hotspots to explore features</li>
+        </ol>
+    </div>
+
+    <a href="/ar.html" class="btn">Launch AR Experience →</a>
+</body>
+
+</html>
