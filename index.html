@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>McLaren Artura Spider — AR Experience</title>
+  <meta name="description"
+    content="Explore the 2025 McLaren Artura Spider in augmented reality. Walk around the car, discover engineering details, and experience the future of supercar design." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <!-- Variant Launch WebAR SDK — bridges WebXR to ARKit on iOS via App Clips -->
+  <script src="https://launchar.app/sdk/v1?key=cTc79qxBU8hr2ccsKEE8h48cfpfb3X1r"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- ============ SPLASH SCREEN ============ -->
+  <div id="splash-screen" class="splash">
+    <div class="splash__bg"></div>
+    <div class="splash__content">
+      <div class="splash__logo">
+        <svg class="splash__mclaren-logo" viewBox="0 0 200 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="20" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="22" fill="white"
+            letter-spacing="6">McLAREN</text>
+        </svg>
+      </div>
+      <div class="splash__divider"></div>
+      <h1 class="splash__title">ARTURA SPIDER</h1>
+      <p class="splash__subtitle">AR EXPERIENCE</p>
+      <div class="splash__loader">
+        <div class="splash__loader-track">
+          <div class="splash__loader-fill" id="loader-fill"></div>
+        </div>
+        <span class="splash__loader-text" id="loader-text">Loading assets…</span>
+      </div>
+    </div>
+    <div class="splash__gradient-line"></div>
+  </div>
+
+  <!-- ============ ONBOARDING OVERLAY ============ -->
+  <div id="onboarding" class="onboarding hidden">
+    <div class="onboarding__backdrop"></div>
+    <div class="onboarding__content">
+      <div class="onboarding__steps">
+        <div class="onboarding__step">
+          <div class="onboarding__icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <rect x="12" y="6" width="24" height="36" rx="4" stroke="#FF8000" stroke-width="2" fill="none" />
+              <circle cx="24" cy="36" r="2" fill="#FF8000" />
+              <line x1="18" y1="12" x2="30" y2="12" stroke="#FF8000" stroke-width="1" opacity="0.5" />
+            </svg>
+          </div>
+          <p class="onboarding__text">Point your phone at a <strong>flat surface</strong></p>
+        </div>
+        <div class="onboarding__step-divider">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 6L15 12L9 18" stroke="#FF8000" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="onboarding__step">
+          <div class="onboarding__icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="16" stroke="#FF8000" stroke-width="2" fill="none" stroke-dasharray="4 4" />
+              <circle cx="24" cy="24" r="4" fill="#FF8000" />
+            </svg>
+          </div>
+          <p class="onboarding__text"><strong>Tap</strong> to place the car</p>
+        </div>
+        <div class="onboarding__step-divider">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 6L15 12L9 18" stroke="#FF8000" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="onboarding__step">
+          <div class="onboarding__icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="8" stroke="#FF8000" stroke-width="2" fill="none">
+                <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="24" cy="24" r="3" fill="#FF8000" />
+              <path d="M24 10V6M24 42V38M10 24H6M42 24H38" stroke="#FF8000" stroke-width="1.5" stroke-linecap="round"
+                opacity="0.5" />
+            </svg>
+          </div>
+          <p class="onboarding__text">Tap <strong>hotspots</strong> to explore features</p>
+        </div>
+      </div>
+      <button id="onboarding-start" class="onboarding__cta">
+        <span>Begin Experience</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ 3D VIEWER ============ -->
+  <div id="viewer-container" class="viewer hidden">
+    <model-viewer id="mclaren-viewer" src="" poster="" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed"
+      xr-environment camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="5000"
+      rotation-per-second="12deg" environment-image="neutral" shadow-intensity="1.2" shadow-softness="0.8"
+      exposure="1.0" tone-mapping="commerce" camera-orbit="45deg 65deg 105%" min-camera-orbit="auto auto 80%"
+      max-camera-orbit="auto auto 200%" field-of-view="30deg" interaction-prompt="none" loading="eager"
+      style="width: 100%; height: 100%;">
+      <!-- AR Prompt -->
+      <button slot="ar-button" id="ar-button" class="ar-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 22V12" stroke="currentColor" stroke-width="2" />
+          <path d="M22 7L12 12L2 7" stroke="currentColor" stroke-width="2" />
+        </svg>
+        <span>View in AR</span>
+      </button>
+
+      <!-- Hotspot markers — positions calibrated for Astronaut demo model -->
+      <!-- When you swap in the McLaren GLB, update data-position/data-normal values -->
+      <button class="hotspot" slot="hotspot-doors" data-position="0.12 0.09 0.05" data-normal="1 0 0" id="hs-doors">
+        <div class="hotspot__ring"></div>
+        <div class="hotspot__dot"></div>
+        <div class="hotspot__label">Doors</div>
+      </button>
+
+      <button class="hotspot" slot="hotspot-spoiler" data-position="0 0.15 -0.05" data-normal="0 1 0" id="hs-spoiler">
+        <div class="hotspot__ring"></div>
+        <div class="hotspot__dot"></div>
+        <div class="hotspot__label">Spoiler</div>
+      </button>
+
+      <button class="hotspot" slot="hotspot-wheels" data-position="-0.07 -0.03 0.08" data-normal="-1 0 0"
+        id="hs-wheels">
+        <div class="hotspot__ring"></div>
+        <div class="hotspot__dot"></div>
+        <div class="hotspot__label">Wheels</div>
+      </button>
+
+      <button class="hotspot" slot="hotspot-mirrors" data-position="0.1 0.12 0.06" data-normal="1 0.3 0.3"
+        id="hs-mirrors">
+        <div class="hotspot__ring"></div>
+        <div class="hotspot__dot"></div>
+        <div class="hotspot__label">Mirrors</div>
+      </button>
+
+      <button class="hotspot" slot="hotspot-splitter" data-position="0 -0.05 0.12" data-normal="0 0 1" id="hs-splitter">
+        <div class="hotspot__ring"></div>
+        <div class="hotspot__dot"></div>
+        <div class="hotspot__label">Splitter</div>
+      </button>
+
+      <button class="hotspot" slot="hotspot-exhaust" data-position="0 0.02 -0.12" data-normal="0 0 -1" id="hs-exhaust">
+        <div class="hotspot__ring"></div>
+        <div class="hotspot__dot"></div>
+        <div class="hotspot__label">Exhaust</div>
+      </button>
+
+      <button class="hotspot" slot="hotspot-headlights" data-position="0.08 0.06 0.1" data-normal="0.5 0 1"
+        id="hs-headlights">
+        <div class="hotspot__ring"></div>
+        <div class="hotspot__dot"></div>
+        <div class="hotspot__label">Headlights</div>
+      </button>
+
+      <button class="hotspot" slot="hotspot-engine" data-position="-0.05 0.1 -0.06" data-normal="0 1 0" id="hs-engine">
+        <div class="hotspot__ring"></div>
+        <div class="hotspot__dot"></div>
+        <div class="hotspot__label">Engine</div>
+      </button>
+
+      <!-- Loading progress bar inside model-viewer -->
+      <div class="viewer__progress" slot="progress-bar">
+        <div class="viewer__progress-bar" id="model-progress"></div>
+      </div>
+
+    </model-viewer>
+
+    <!-- HUD Overlay -->
+    <div class="hud">
+      <div class="hud__top">
+        <div class="hud__brand">
+          <span class="hud__brand-name">McLAREN</span>
+          <span class="hud__brand-model">ARTURA SPIDER</span>
+        </div>
+        <button id="btn-reset-view" class="hud__btn" title="Reset View">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M1 4V10H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path
+              d="M3.51 15C4.16 16.86 5.39 18.43 7.01 19.46C8.63 20.49 10.55 20.92 12.44 20.67C14.33 20.42 16.07 19.52 17.34 18.12C18.61 16.72 19.33 14.93 19.38 13.06C19.43 11.19 18.81 9.37 17.62 7.91C16.43 6.45 14.75 5.46 12.88 5.11C11.01 4.76 9.08 5.08 7.42 5.99C5.76 6.91 4.47 8.37 3.73 10.13"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ INFO PANEL ============ -->
+  <div id="info-panel" class="panel hidden">
+    <div class="panel__backdrop" id="panel-backdrop"></div>
+    <div class="panel__card">
+      <div class="panel__header">
+        <div class="panel__accent-line"></div>
+        <button id="panel-close" class="panel__close" aria-label="Close panel">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <div class="panel__body">
+        <h2 class="panel__title" id="panel-title"></h2>
+        <p class="panel__description" id="panel-description"></p>
+        <div class="panel__specs" id="panel-specs"></div>
+      </div>
+      <div class="panel__footer">
+        <div class="panel__footer-line"></div>
+        <span class="panel__footer-text">McLAREN ARTURA SPIDER</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
