@@ -349,7 +349,7 @@ export async function startARSession(modelUrl: string): Promise<void> {
 
         // Set up hit testing  
         const viewerRefSpace = await xrSession.requestReferenceSpace('viewer');
-        hitTestSource = await xrSession.requestHitTestSource!({ space: viewerRefSpace });
+        hitTestSource = (await xrSession.requestHitTestSource!({ space: viewerRefSpace })) ?? null;
 
         // Handle tap to place
         xrSession.addEventListener('select', onSelect);
