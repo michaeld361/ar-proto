@@ -95,15 +95,24 @@ async function setupARButton(): Promise<void> {
         ? await navigator.xr.isSessionSupported('immersive-ar').catch(() => false)
         : false;
 
+    // DEBUG: Show AR detection info on screen (temporary)
+    const debug = document.createElement('div');
+    debug.style.cssText = 'position:fixed;bottom:80px;left:10px;z-index:9999;background:rgba(0,0,0,0.9);color:#0f0;font:12px monospace;padding:10px;border-radius:8px;max-width:90vw;';
+    debug.innerHTML = `
+        VLaunch: ${hasVariantLaunch}<br>
+        navigator.xr: ${!!navigator.xr}<br>
+        WebXR supported: ${webxrSupported}<br>
+        AR path: ${hasVariantLaunch || webxrSupported ? 'MODEL-VIEWER activateAR' : 'CAMERA OVERLAY'}<br>
+        UA: ${navigator.userAgent.slice(0, 60)}...
+    `;
+    document.body.appendChild(debug);
+
     if (hasVariantLaunch || webxrSupported) {
-        // WebXR available (native on Android, or via Variant Launch on iOS)
-        // model-viewer activateAR() will handle the session through the polyfill
         arButton.classList.remove('hidden');
         arButton.addEventListener('click', () => {
             modelViewer.activateAR();
         });
     } else if (isCameraARSupported()) {
-        // Fallback — camera overlay AR
         arButton.classList.remove('hidden');
         arButton.addEventListener('click', () => {
             startCameraAR(modelViewer);
