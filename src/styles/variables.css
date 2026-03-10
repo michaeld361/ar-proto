@@ -1,5 +1,6 @@
 /* =============================================
    McLaren Artura Spider — Design Tokens
+   Aligned with McLaren brand guidelines (Figma)
    ============================================= */
 
 :root {
@@ -10,19 +11,24 @@
   --mclaren-papaya-glow: rgba(255, 128, 0, 0.35);
   --mclaren-papaya-subtle: rgba(255, 128, 0, 0.08);
 
-  /* Neutrals */
-  --carbon-950: #0A0A0A;
-  --carbon-900: #111111;
-  --carbon-850: #161616;
-  --carbon-800: #1A1A1A;
-  --carbon-700: #222222;
-  --carbon-600: #333333;
-  --carbon-500: #555555;
-  --carbon-400: #777777;
-  --carbon-300: #999999;
-  --carbon-200: #BBBBBB;
-  --carbon-100: #DDDDDD;
-  --carbon-50:  #F0F0F0;
+  /* McLaren Navy Palette (from Figma) */
+  --mclaren-navy: #0A1628;
+  --mclaren-navy-light: #0F2038;
+  --mclaren-navy-lighter: #142A48;
+
+  /* Neutrals — Navy-based */
+  --carbon-950: #0A1628;
+  --carbon-900: #0C1A30;
+  --carbon-850: #0F2038;
+  --carbon-800: #122640;
+  --carbon-700: #1A3358;
+  --carbon-600: #2A4570;
+  --carbon-500: #405880;
+  --carbon-400: #607898;
+  --carbon-300: #8098B0;
+  --carbon-200: #A0B8CC;
+  --carbon-100: #C0D0E0;
+  --carbon-50: #E0E8F0;
   --white: #FFFFFF;
   --white-90: rgba(255, 255, 255, 0.9);
   --white-70: rgba(255, 255, 255, 0.7);
@@ -39,15 +45,24 @@
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 
-  --text-xs: 0.625rem;     /* 10px */
-  --text-sm: 0.75rem;      /* 12px */
-  --text-base: 0.875rem;   /* 14px */
-  --text-md: 1rem;         /* 16px */
-  --text-lg: 1.125rem;     /* 18px */
-  --text-xl: 1.5rem;       /* 24px */
-  --text-2xl: 2rem;        /* 32px */
-  --text-3xl: 2.5rem;      /* 40px */
-  --text-4xl: 3.5rem;      /* 56px */
+  --text-xs: 0.625rem;
+  /* 10px */
+  --text-sm: 0.75rem;
+  /* 12px */
+  --text-base: 0.875rem;
+  /* 14px */
+  --text-md: 1rem;
+  /* 16px */
+  --text-lg: 1.125rem;
+  /* 18px */
+  --text-xl: 1.5rem;
+  /* 24px */
+  --text-2xl: 2rem;
+  /* 32px */
+  --text-3xl: 2.5rem;
+  /* 40px */
+  --text-4xl: 3.5rem;
+  /* 56px */
 
   --weight-light: 300;
   --weight-regular: 400;
@@ -79,9 +94,9 @@
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
   --shadow-glow: 0 0 24px var(--mclaren-papaya-glow);
 
-  /* Glass */
-  --glass-bg: rgba(16, 16, 16, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  /* Glass — Navy-tinted */
+  --glass-bg: rgba(10, 22, 40, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.06);
   --glass-blur: blur(20px);
 
   /* Transitions */
