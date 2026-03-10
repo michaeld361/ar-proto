@@ -87,7 +87,7 @@ function init(): void {
 // ── AR Button Setup ──────────────────────────
 
 function setupARButton(): void {
-    // Always show AR button — navigates to MindAR image-tracked AR page
+    // Always show AR button — navigates to Zappar instant world tracking AR
     arButton.classList.remove('hidden');
     arButton.addEventListener('click', () => {
         window.location.href = '/ar.html';
