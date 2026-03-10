@@ -31,7 +31,7 @@ const arButton = document.getElementById('ar-button') as HTMLElement;
 
 // ── GLB Model ────────────────────────────────
 // Using a model-viewer sample for PoC. Replace with the optimised McLaren Artura GLB.
-const MODEL_URL = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
+const MODEL_URL = '/models/2025_mclaren_artura_spider.glb';
 // When you have the McLaren Artura model:
 // const MODEL_URL = '/models/mclaren-artura-spider.glb';
 

@@ -10,7 +10,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // ── Config ───────────────────────────────────
 
-const MODEL_URL = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
+const MODEL_URL = '/models/2025_mclaren_artura_spider.glb';
 
 const HOTSPOTS = [
     { id: 'doors', title: 'Dihedral Doors', desc: "McLaren's signature dihedral doors rotate upward and outward, providing dramatic entrance and optimal entry/exit in tight spaces. Carbon fibre construction keeps weight minimal.", offset: new THREE.Vector3(0.12, 0.09, 0.05) },
@@ -84,20 +84,18 @@ const loader = new GLTFLoader();
 loader.load(MODEL_URL, (gltf) => {
     model = gltf.scene;
 
-    // Center and scale
+    // Center model horizontally and place on ground (1:1 real-world scale)
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
-    const size = box.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = 0.3 / maxDim;
-    model.scale.setScalar(scale);
-    model.position.copy(center.multiplyScalar(-scale));
-    model.position.y = 0;
+    const minY = box.min.y;
+
+    // Center X/Z, shift Y so bottom sits on ground
+    model.position.set(-center.x, -minY, -center.z);
 
     trackerGroup.add(model);
 
     // Show placement prompt
-    scanPrompt.textContent = 'TAP TO PLACE THE MODEL';
+    scanPrompt.textContent = 'TAP TO PLACE THE CAR';
     scanPrompt.classList.remove('hidden');
 });
 
@@ -201,7 +199,8 @@ function animate(): void {
 
     if (!placed) {
         // Before placement, anchor tracks in front of camera
-        instantTracker.setAnchorPoseFromCameraOffset(0, -0.3, -1.2);
+        // Place car ~5m in front and slightly below eye level
+        instantTracker.setAnchorPoseFromCameraOffset(0, -1.0, -5);
     }
 
     renderer.render(scene, camera);
