@@ -88,11 +88,26 @@ let placed = false;
 let modelBox: THREE.Box3 | null = null;
 let modelSize: THREE.Vector3 | null = null;
 
+// Real-world McLaren Artura Spider length = 4.534m
+const REAL_CAR_LENGTH = 4.534;
+
 const loader = new GLTFLoader();
 loader.load(MODEL_URL, (gltf) => {
     model = gltf.scene;
 
-    // Center model horizontally and place on ground (1:1 real-world scale)
+    // Measure raw model size
+    const rawBox = new THREE.Box3().setFromObject(model);
+    const rawSize = rawBox.getSize(new THREE.Vector3());
+    const longestAxis = Math.max(rawSize.x, rawSize.y, rawSize.z);
+
+    // Scale to real-world size (longest dimension = car length)
+    const scaleFactor = REAL_CAR_LENGTH / longestAxis;
+    model.scale.setScalar(scaleFactor);
+
+    console.log('[AR] Raw model size:', rawSize.x.toFixed(4), 'x', rawSize.y.toFixed(4), 'x', rawSize.z.toFixed(4));
+    console.log('[AR] Scale factor:', scaleFactor.toFixed(2));
+
+    // Re-measure after scaling
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     const minY = box.min.y;
@@ -100,14 +115,13 @@ loader.load(MODEL_URL, (gltf) => {
     // Center X/Z, shift Y so bottom sits on ground
     model.position.set(-center.x, -minY, -center.z);
 
-    // Store re-computed bounding box (after repositioning) for hotspot placement
     trackerGroup.add(model);
 
-    // Recompute box after position change
+    // Recompute box after position change for hotspot placement
     modelBox = new THREE.Box3().setFromObject(model);
     modelSize = modelBox.getSize(new THREE.Vector3());
 
-    console.log('[AR] Model loaded. Size (m):', modelSize.x.toFixed(2), 'x', modelSize.y.toFixed(2), 'x', modelSize.z.toFixed(2));
+    console.log('[AR] Final model size (m):', modelSize.x.toFixed(2), 'x', modelSize.y.toFixed(2), 'x', modelSize.z.toFixed(2));
 
     // Show placement prompt
     scanPrompt.textContent = 'TAP TO PLACE THE CAR';
