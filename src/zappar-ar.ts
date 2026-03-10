@@ -41,6 +41,9 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
 container.appendChild(renderer.domElement);
 
+// Connect Zappar pipeline to the WebGL context (MUST happen before camera.start)
+ZapparThree.glContextSet(renderer.getContext());
+
 // Zappar camera (handles device camera + tracking)
 const camera = new ZapparThree.Camera();
 
