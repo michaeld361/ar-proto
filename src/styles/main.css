@@ -99,10 +99,11 @@ button {
 
 .splash__title {
     font-family: var(--font-display);
-    font-size: var(--text-2xl);
+    font-size: clamp(1.5rem, 6vw, 2rem);
     font-weight: var(--weight-bold);
-    letter-spacing: 8px;
+    letter-spacing: clamp(4px, 1.5vw, 8px);
     text-transform: uppercase;
+    text-align: center;
     opacity: 0;
     animation: fadeSlideUp 0.8s var(--ease-out-expo) 0.7s forwards;
 }

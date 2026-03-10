@@ -89,7 +89,8 @@ let modelBox: THREE.Box3 | null = null;
 let modelSize: THREE.Vector3 | null = null;
 
 // Real-world McLaren Artura Spider length = 4.534m
-const REAL_CAR_LENGTH = 4.534;
+// Extra 3x multiplier because the model's internal transforms compress the apparent size
+const REAL_CAR_LENGTH = 4.534 * 3;
 
 const loader = new GLTFLoader();
 loader.load(MODEL_URL, (gltf) => {
@@ -234,8 +235,8 @@ function animate(): void {
 
     if (!placed) {
         // Before placement, anchor tracks in front of camera
-        // Place car ~5m in front and slightly below eye level
-        instantTracker.setAnchorPoseFromCameraOffset(0, -1.0, -5);
+        // Place car ~3m in front and 1.2m below eye level (ground plane)
+        instantTracker.setAnchorPoseFromCameraOffset(0, -1.2, -3);
     }
 
     renderer.render(scene, camera);
